@@ -56,7 +56,7 @@ lat_dim = 256
 np.random.seed(7)
 BASE_DIR = '../'
 GLOVE_DIR = os.path.join(BASE_DIR, 'glove.6B')
-TEXT_DATA_DIR = os.path.join(BASE_DIR, '20_newsgroup')
+TEXT_DATA_DIR = os.path.join(BASE_DIR, '20_newsgroups')
 
 # load the dataset but only keep the top n words, zero the rest
 

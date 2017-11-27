@@ -149,9 +149,11 @@ print('Training model.')
 
 model = Sequential()
 model.add(Embedding(MAX_NB_WORDS, EMBEDDING_DIM, input_length=MAX_SEQUENCE_LENGTH))
+CONV_STR = 'NOCONV'
 if CONV:
     model.add(Conv1D(filters=32, kernel_size=3, padding='same', activation='relu'))
     model.add(MaxPooling1D(pool_size=2))
+    CONV_STR=CONV
 
 if RNN == 'GRU':
     model.add(GRU(lat_dim, dropout=0.2, recurrent_dropout=0.2))
@@ -167,5 +169,5 @@ for i in range(5):
     scores = model.evaluate(x_val, y_val, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1] * 100))
     # Final evaluation of the model
-    name = "20_news_rnn_conv_%d_epochs" % (epochs + i * epochs)
+    name = "20_news_rnn_%s_%s_%s_%d_epochs.h5" % (RNN,EMBED,CONV_STR,epochs + i * epochs)
     model.save(name)

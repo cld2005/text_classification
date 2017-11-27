@@ -13,3 +13,17 @@ $ cd glove.6B
 $ wget https://s3.amazonaws.com/cld2005.glove.100/glove.6B.100d.txt
 ```
 
+
+glove:word2vec
+
+GRU:LSTM
+
+CONV:NOCONV
+
+
+glove:GRU:CONV: 77.17%
+
+glove:GRU:NOCONV 74.54%
+
+word2vec:GRU:NOCONV
+

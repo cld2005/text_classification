@@ -8,6 +8,8 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM, GRU
 from keras.layers.embeddings import Embedding
+from keras.layers.convolutional import Conv1D
+from keras.layers.convolutional import MaxPooling1D
 from keras.preprocessing import sequence
 import os
 import sys
@@ -54,6 +56,8 @@ epochs = 20
 batch_size = 64
 VALIDATION_SPLIT = 0.2
 lat_dim = 256
+RNN = 'GRU'
+CONV = False
 # fix random seed for reproducibility
 np.random.seed(7)
 BASE_DIR = '../'
@@ -124,7 +128,15 @@ print('Training model.')
 
 model = Sequential()
 model.add(Embedding(MAX_NB_WORDS, EMBEDDING_DIM, input_length=MAX_SEQUENCE_LENGTH))
-model.add(GRU(lat_dim, dropout=0.2, recurrent_dropout=0.2))
+if CONV:
+    model.add(Conv1D(filters=32, kernel_size=3, padding='same', activation='relu'))
+    model.add(MaxPooling1D(pool_size=2))
+
+if RNN =='GRU':
+    model.add(GRU(lat_dim, dropout=0.2, recurrent_dropout=0.2))
+else:
+    model.add(LSTM(lat_dim, dropout=0.2, recurrent_dropout=0.2))
+
 model.add(Dense(len(labels_index), activation='sigmoid'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 print(model.summary())

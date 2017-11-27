@@ -48,7 +48,7 @@ def load_data(TEXT_DATA_DIR):
 
 MAX_NB_WORDS = 5000
 VALIDATION_SPLIT = 0.2
-MAX_SEQUENCE_LENGTH = 1000
+MAX_SEQUENCE_LENGTH = 300
 EMBEDDING_DIM = 100
 epochs = 20
 batch_size = 64
@@ -79,9 +79,14 @@ tokenizer = Tokenizer(num_words=MAX_NB_WORDS)
 tokenizer.fit_on_texts(texts)
 sequences = tokenizer.texts_to_sequences(texts)
 word_index = tokenizer.word_index
+sum = 0
+for seq in sequences:
+    sum=sum+len(seq)
+print ('average len ' , sum/len(sequences))
+
 
 print('Found %s unique tokens.' % len(word_index))
-data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
+data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH,padding='post',truncating='post')
 labels = to_categorical(np.asarray(labels))
 
 indices = np.arange(data.shape[0])

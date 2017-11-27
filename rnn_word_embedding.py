@@ -6,11 +6,12 @@ from keras.utils import to_categorical
 
 from keras.models import Sequential
 from keras.layers import Dense
-from keras.layers import LSTM,GRU
+from keras.layers import LSTM, GRU
 from keras.layers.embeddings import Embedding
 from keras.preprocessing import sequence
 import os
 import sys
+
 
 def load_data(TEXT_DATA_DIR):
     print('Processing text dataset')
@@ -44,6 +45,7 @@ def load_data(TEXT_DATA_DIR):
                     labels.append(label_id)
     return texts, labels, labels_index
 
+
 MAX_NB_WORDS = 5000
 VALIDATION_SPLIT = 0.2
 MAX_SEQUENCE_LENGTH = 1000
@@ -71,10 +73,7 @@ f.close()
 
 print('Found %s word vectors.' % len(embeddings_index))
 
-
 texts, labels, labels_index = load_data(TEXT_DATA_DIR)
-
-
 
 tokenizer = Tokenizer(num_words=MAX_NB_WORDS)
 tokenizer.fit_on_texts(texts)
@@ -84,6 +83,11 @@ word_index = tokenizer.word_index
 print('Found %s unique tokens.' % len(word_index))
 data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
 labels = to_categorical(np.asarray(labels))
+
+indices = np.arange(data.shape[0])
+np.random.shuffle(indices)
+data = data[indices]
+labels = labels[indices]
 
 num_validation_samples = int(VALIDATION_SPLIT * data.shape[0])
 x_train = data[:-num_validation_samples]
@@ -119,11 +123,11 @@ model.add(GRU(lat_dim, dropout=0.2, recurrent_dropout=0.2))
 model.add(Dense(len(labels_index), activation='sigmoid'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 print(model.summary())
-model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size,validation_data=(x_val, y_val))
-scores = model.evaluate(x_val, y_val, verbose=0)
-print("Accuracy: %.2f%%" % (scores[1]*100))
-# Final evaluation of the model
-model.save('20_news_rnn')
 
-
-
+for i in range(5):
+    model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, validation_data=(x_val, y_val))
+    scores = model.evaluate(x_val, y_val, verbose=0)
+    print("Accuracy: %.2f%%" % (scores[1] * 100))
+    # Final evaluation of the model
+    name = "20_news_rnn_%" % (epochs + i * epochs)
+    model.save(name)

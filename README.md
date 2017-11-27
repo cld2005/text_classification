@@ -23,9 +23,9 @@ CONV:NOCONV
 
 glove:GRU:CONV: 74.54%
 
-glove:GRU:NOCONV 77.17%
+glove:GRU:NOCONV: 77.17%
 
-word2vec:GRU:NOCONV
+word2vec:GRU:NOCONV: 76.74%
 
 word2vec:GRU:CONV
 

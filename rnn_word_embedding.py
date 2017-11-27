@@ -129,5 +129,5 @@ for i in range(5):
     scores = model.evaluate(x_val, y_val, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1] * 100))
     # Final evaluation of the model
-    name = "20_news_rnn_%" % (epochs + i * epochs)
+    name = "20_news_rnn_%d_epochs" % (epochs + i * epochs)
     model.save(name)

@@ -48,7 +48,7 @@ MAX_NB_WORDS = 5000
 VALIDATION_SPLIT = 0.2
 MAX_SEQUENCE_LENGTH = 1000
 EMBEDDING_DIM = 100
-epochs = 30
+epochs = 1
 batch_size = 64
 VALIDATION_SPLIT = 0.2
 lat_dim = 256
@@ -74,6 +74,8 @@ print('Found %s word vectors.' % len(embeddings_index))
 
 texts, labels, labels_index = load_data(TEXT_DATA_DIR)
 
+
+
 tokenizer = Tokenizer(num_words=MAX_NB_WORDS)
 tokenizer.fit_on_texts(texts)
 sequences = tokenizer.texts_to_sequences(texts)
@@ -82,6 +84,12 @@ word_index = tokenizer.word_index
 print('Found %s unique tokens.' % len(word_index))
 data = pad_sequences(sequences, maxlen=MAX_SEQUENCE_LENGTH)
 labels = to_categorical(np.asarray(labels))
+
+num_validation_samples = int(VALIDATION_SPLIT * data.shape[0])
+x_train = data[:-num_validation_samples]
+y_train = labels[:-num_validation_samples]
+x_val = data[-num_validation_samples:]
+y_val = labels[-num_validation_samples:]
 
 print('Shape of data tensor:', data.shape)
 print('Shape of label tensor:', labels.shape)
@@ -111,7 +119,9 @@ model.add(GRU(lat_dim, dropout=0.2, recurrent_dropout=0.2))
 model.add(Dense(len(labels_index), activation='sigmoid'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 print(model.summary())
-model.fit(data, labels, epochs=epochs, batch_size=batch_size, validation_split=VALIDATION_SPLIT)
+model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size,validation_data=(x_val, y_val))
+scores = model.evaluate(x_val, y_val, verbose=0)
+print("Accuracy: %.2f%%" % (scores[1]*100))
 # Final evaluation of the model
 model.save('20_news_rnn')
 

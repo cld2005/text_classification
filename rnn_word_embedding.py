@@ -57,7 +57,7 @@ batch_size = 64
 VALIDATION_SPLIT = 0.2
 lat_dim = 256
 RNN = 'GRU'
-CONV = False
+CONV = True
 # fix random seed for reproducibility
 np.random.seed(7)
 BASE_DIR = '../'
@@ -146,5 +146,5 @@ for i in range(5):
     scores = model.evaluate(x_val, y_val, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1] * 100))
     # Final evaluation of the model
-    name = "20_news_rnn_%d_epochs" % (epochs + i * epochs)
+    name = "20_news_rnn_conv_%d_epochs" % (epochs + i * epochs)
     model.save(name)

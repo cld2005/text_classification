@@ -21,9 +21,11 @@ GRU:LSTM
 CONV:NOCONV
 
 
-glove:GRU:CONV: 77.17%
+glove:GRU:CONV: 74.54%
 
-glove:GRU:NOCONV 74.54%
+glove:GRU:NOCONV 77.17%
 
 word2vec:GRU:NOCONV
+
+word2vec:GRY:CONV
 

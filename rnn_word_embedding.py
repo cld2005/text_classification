@@ -7,6 +7,8 @@ from keras.layers import LSTM
 from keras.layers.embeddings import Embedding
 from keras.preprocessing import sequence
 import os
+import sys
+
 
 # fix random seed for reproducibility
 np.random.seed(7)
@@ -47,3 +49,37 @@ model.fit(X_train, y_train, epochs=3, batch_size=64)
 # Final evaluation of the model
 scores = model.evaluate(X_test, y_test, verbose=0)
 print("Accuracy: %.2f%%" % (scores[1]*100))
+
+
+def load_data (TEXT_DATA_DIR):
+    print('Processing text dataset')
+    texts = []  # list of text samples
+    labels_index = {}  # dictionary mapping label name to numeric id
+    labels = []  # list of label ids
+
+    for name in sorted(os.listdir(TEXT_DATA_DIR)):
+        path = os.path.join(TEXT_DATA_DIR, name)
+        if os.path.isdir(path):
+            label_id = len(labels_index)
+            labels_index[name] = label_id
+            for fname in sorted(os.listdir(path)):
+                if fname.isdigit():
+                    fpath = os.path.join(path, fname)
+                    if sys.version_info < (3,):
+                        f = open(fpath)
+                    else:
+                        f = open(fpath, encoding='latin-1')
+                    t = f.read()
+                    i = t.find('\n\n')  # skip header
+                    if 0 < i:
+                        t = t[i:]
+                    texts.append(t)
+                    f.close()
+                    space = ' '
+                    # t = space.join(re.split(r'\t+', t))
+                    t = ' '.join(t);
+                    text_string = str(label_id) + '\t' + space.join(t.split('\n'))
+                    # print (text_string)
+                    labels.append(label_id)
+
+    return texts, labels, labels_index

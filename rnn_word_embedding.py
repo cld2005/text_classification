@@ -56,7 +56,7 @@ VALIDATION_SPLIT = 0.2
 lat_dim = 256
 EMBED = 'GLOVE6B'
 RNN = 'LSTM'
-CONV = True
+CONV = False
 # fix random seed for reproducibility
 np.random.seed(7)
 BASE_DIR = '../'

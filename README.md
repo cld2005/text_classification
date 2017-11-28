@@ -32,10 +32,11 @@ word2vec:GRU:CONV: 74.49%
 
 glove:LSTM:CONV: 71.87%
 
-glove:LSTM:NOCONV 
+glove:LSTM:NOCONV: 75.94%
 
 word2vec:LSTM:NOCONV
 
 word2vec:LSTM:CONV
+
 
 

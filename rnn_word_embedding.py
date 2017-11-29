@@ -54,7 +54,7 @@ epochs = 20
 batch_size = 64
 VALIDATION_SPLIT = 0.2
 lat_dim = 256
-EMBED = 'GLOVE6B'
+EMBED = 'WORD2VEC'
 RNN = 'LSTM'
 CONV = False
 # fix random seed for reproducibility

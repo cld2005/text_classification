@@ -36,7 +36,7 @@ glove:LSTM:NOCONV: 75.94%
 
 word2vec:LSTM:NOCONV: 76.27%
 
-word2vec:LSTM:CONV
+word2vec:LSTM:CONV: 74.29%
 
 
 

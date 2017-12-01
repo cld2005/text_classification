@@ -38,8 +38,8 @@
       <file leaf-file-name="rnn_ag_news_word_embedding.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/rnn_ag_news_word_embedding.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="34" column="10" lean-forward="false" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="10" />
+            <state relative-caret-position="360">
+              <caret line="32" column="19" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="19" />
               <folding>
                 <element signature="e#68#86#0" expanded="true" />
               </folding>
@@ -824,8 +824,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/rnn_ag_news_word_embedding.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="34" column="10" lean-forward="false" selection-start-line="34" selection-start-column="10" selection-end-line="34" selection-end-column="10" />
+        <state relative-caret-position="360">
+          <caret line="32" column="19" lean-forward="false" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="19" />
           <folding>
             <element signature="e#68#86#0" expanded="true" />
           </folding>

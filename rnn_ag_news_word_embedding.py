@@ -10,6 +10,10 @@ from keras.layers import LSTM, GRU
 from keras.layers.embeddings import Embedding
 from keras.layers.convolutional import Conv1D
 from keras.layers.convolutional import MaxPooling1D
+
+from keras.layers import Dense, Input, GlobalMaxPooling1D
+from keras.layers import Conv1D, MaxPooling1D, Embedding,Flatten
+from keras.models import Model
 import os
 from collections import Counter
 
@@ -30,13 +34,13 @@ def load_data(TEXT_DATA_DIR):
 
 MAX_NB_WORDS = 20000
 VALIDATION_SPLIT = 0.2
-MAX_SEQUENCE_LENGTH = 300
-EMBEDDING_DIM = 128
+MAX_SEQUENCE_LENGTH = 1000
+EMBEDDING_DIM = 100
 epochs = 20
 batch_size = 64
 VALIDATION_SPLIT = 0.2
 lat_dim = 256
-WORD2VEC='WORD2VEC'
+WORD2VEC = 'WORD2VEC'
 
 EMBED = 'GLOVE'
 RNN = 'GRU'
@@ -45,8 +49,9 @@ CONV = False
 np.random.seed(7)
 BASE_DIR = '../'
 GLOVE_DIR = os.path.join(BASE_DIR, 'glove.6B')
-AG_NEWS_TEST = os.path.join('ag_news','ag_news_test.txt')
-AG_NEWS_TRAIN = os.path.join ('ag_news','ag_news_train.txt')
+AG_NEWS_TEST = os.path.join('ag_news', 'ag_news_test.txt')
+AG_NEWS_TRAIN = os.path.join('ag_news', 'ag_news_train.txt')
+
 
 def load_glove6B(GLOVE_DIR):
     embeddings_index = {}
@@ -62,7 +67,7 @@ def load_glove6B(GLOVE_DIR):
 
 
 def load_word2vec(embeddings_path='embeddings.npz'):
-    embeddings_index={}
+    embeddings_index = {}
     weights = np.load(open(embeddings_path, 'rb'))["emb"]
     layer = Embedding(input_dim=weights.shape[0],
                       output_dim=weights.shape[1],
@@ -71,7 +76,7 @@ def load_word2vec(embeddings_path='embeddings.npz'):
     index = np.load(embeddings_path)["word2ind"].flatten()[0]
 
     for key in index:
-        embeddings_index[index[key]]= weights[key]
+        embeddings_index[index[key]] = weights[key]
     return embeddings_index
 
 
@@ -85,7 +90,7 @@ print('Found %s word vectors.' % len(embeddings_index))
 
 texts, labels, labels_index = load_data(AG_NEWS_TRAIN)
 
-print ('labels_index',labels_index)
+print ('labels_index', labels_index)
 print ('texts[0]', texts[0])
 tokenizer = Tokenizer(num_words=MAX_NB_WORDS)
 tokenizer.fit_on_texts(texts)
@@ -107,15 +112,11 @@ labels = labels[indices]
 
 num_validation_samples = int(VALIDATION_SPLIT * data.shape[0])
 
-
 x_train = data[:-num_validation_samples]
 y_train = labels[:-num_validation_samples]
 
-
 x_val = data[-num_validation_samples:]
 y_val = labels[-num_validation_samples:]
-
-
 
 print('Shape of data tensor:', data.shape)
 print('Shape of label tensor:', labels.shape)
@@ -156,10 +157,33 @@ model.add(Dense(len(labels_index), activation='sigmoid'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['acc'])
 print(model.summary())
 
+
+model.compile(loss='categorical_crossentropy',
+              optimizer='rmsprop',
+              metrics=['acc'])
+
+
+# sequence_input = Input(shape=(MAX_SEQUENCE_LENGTH,), dtype='int32')
+# embedded_sequences = embedding_layer(sequence_input)
+# x = Conv1D(128, 5, activation='relu')(embedded_sequences)
+# x = MaxPooling1D(5)(x)
+# x = Conv1D(128, 5, activation='relu')(x)
+# x = MaxPooling1D(5)(x)
+# x = Conv1D(128, 5, activation='relu')(x)
+# x = MaxPooling1D(35)(x)  # global max pooling
+# x = Flatten()(x)
+# x = Dense(128, activation='relu')(x)
+# preds = Dense(len(labels_index), activation='softmax')(x)
+#
+# model = Model(sequence_input, preds)
+# model.compile(loss='categorical_crossentropy',
+#               optimizer='rmsprop',
+#               metrics=['acc'])
+
 for i in range(5):
     model.fit(x_train, y_train, epochs=epochs, batch_size=batch_size, validation_data=(x_val, y_val))
     scores = model.evaluate(x_val, y_val, verbose=0)
     print("Accuracy: %.2f%%" % (scores[1] * 100))
     # Final evaluation of the model
-    name = "ag_news_rnn_%s_%s_%s_%d_epochs.h5" % (RNN,EMBED,CONV_STR,epochs + i * epochs)
+    name = "ag_news_rnn_%s_%s_%s_%d_epochs.h5" % (RNN, EMBED, CONV_STR, epochs + i * epochs)
     model.save(name)

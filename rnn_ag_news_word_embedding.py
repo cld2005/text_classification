@@ -28,7 +28,7 @@ def load_data(TEXT_DATA_DIR):
     return texts, labels, labels_index
 
 
-MAX_NB_WORDS = 5000
+MAX_NB_WORDS = 20000
 VALIDATION_SPLIT = 0.2
 MAX_SEQUENCE_LENGTH = 300
 EMBEDDING_DIM = 128

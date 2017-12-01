@@ -40,7 +40,7 @@ WORD2VEC='WORD2VEC'
 
 EMBED = 'GLOVE'
 RNN = 'GRU'
-CONV = True
+CONV = False
 # fix random seed for reproducibility
 np.random.seed(7)
 BASE_DIR = '../'
@@ -85,6 +85,8 @@ print('Found %s word vectors.' % len(embeddings_index))
 
 texts, labels, labels_index = load_data(AG_NEWS_TRAIN)
 
+print ('labels_index',labels_index)
+print ('texts[0]', texts[0])
 tokenizer = Tokenizer(num_words=MAX_NB_WORDS)
 tokenizer.fit_on_texts(texts)
 sequences = tokenizer.texts_to_sequences(texts)

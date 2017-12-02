@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def plot(path):
-	file = open(path, "r")
+	file = open("./logs/" + path, "r")
 	lines = file.readlines()
 	file.close()
 
@@ -41,4 +41,4 @@ def plot(path):
 
 
 if __name__ == '__main__':
-	plot("gru_convw2v.txt")
+	plot("gru_w2v_noconv.txt")

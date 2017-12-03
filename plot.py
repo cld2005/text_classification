@@ -10,7 +10,6 @@ def plot(path):
 
 	data = []
 	for line in lines:
-
 		line = line.strip()
 		words = line.split()
 		for w in range(len(words)):

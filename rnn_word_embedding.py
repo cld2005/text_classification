@@ -54,9 +54,9 @@ epochs = 20
 batch_size = 64
 VALIDATION_SPLIT = 0.2
 lat_dim = 256
-EMBED = 'WORD2VEC'
-RNN = 'LSTM'
-CONV = True 
+EMBED = 'GLOVE'
+RNN = 'GRU'
+CONV = False
 # fix random seed for reproducibility
 np.random.seed(7)
 BASE_DIR = '../'

@@ -40,4 +40,4 @@ def plot(path):
 
 
 if __name__ == '__main__':
-	plot("gru_w2v_noconv.txt")
+	plot("gru_glove_noconv.txt")
